@@ -1,4 +1,6 @@
 ## ignore temp
 *.swp
 *.suo
+## packages
+/packages
 
