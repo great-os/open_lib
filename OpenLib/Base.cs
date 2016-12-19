@@ -7,6 +7,5 @@ namespace OpenLib
 {
     public class Base
     {
-        static string Version = "1.0.0";
     }
 }

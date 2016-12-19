@@ -1,0 +1,12 @@
+E:\GitCode\C#\OpenLib\TestLib\bin\Debug\TestLib.exe
+E:\GitCode\C#\OpenLib\TestLib\bin\Debug\TestLib.pdb
+E:\GitCode\C#\OpenLib\TestLib\obj\x86\Debug\TestLib.Properties.Resources.resources
+E:\GitCode\C#\OpenLib\TestLib\obj\x86\Debug\TestLib.csproj.GenerateResource.Cache
+E:\GitCode\C#\OpenLib\TestLib\obj\x86\Debug\TestLib.exe
+E:\GitCode\C#\OpenLib\TestLib\obj\x86\Debug\TestLib.pdb
+E:\GitCode\C#\OpenLib\TestLib\obj\x86\Debug\TestLib.csprojResolveAssemblyReference.cache
+E:\GitCode\C#\OpenLib\TestLib\obj\x86\Debug\TestLib.Form1.resources
+E:\GitCode\C#\OpenLib\TestLib\bin\Debug\OpenLib.dll
+E:\GitCode\C#\OpenLib\TestLib\bin\Debug\System.Data.SQLite.dll
+E:\GitCode\C#\OpenLib\TestLib\bin\Debug\OpenLib.pdb
+E:\GitCode\C#\OpenLib\TestLib\bin\Debug\System.Data.SQLite.xml
