@@ -58,94 +58,87 @@ namespace OpenLib.DbHelper
             return sql.Length - sql.Replace("'", "").Length;
         }
 
-        // protected bool m_ProcessNameParams(string sql, Dictionary<string, object> dic, object[] paramArr)
-        // {
-        //     bool beginParam = false;
-        //     string fieldName = "", word = "";
-        //     int paramCount = 0;
-        //     StringBuilder sb = new StringBuilder("");
-        //     if (m_ApostropheCount(sql) % 2 == 1)
-        //     {
-        //         throw new Exception("Symbal \"'\" must be in pairs,please check SQL statement");
-        //     }
-        //     for (int i = 0; i < sql.Length; i++)
-        //     {
-        //         word = sql.Substring(i, 1);
-        //         switch (word)
-        //         {
-        //             case " ":
-        //             case ",":
-        //             case ")":
-        //                 {
-        //                     if (beginParam)
-        //                     {
-                                
-        //                     }
-        //                     break;
-        //                 }
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        //     }
-        //     return true;
-        // }
+        protected bool m_ProcessNameParams(ref string sql, Dictionary<string, object> dic, ref object[] paramArr)
+        {
+            bool beginParam = false;
+            string fieldName = "", word = "";
+            int comaCount = 0;
+            List<object> paramList = new List<object>();
+            object paramValue;
 
-// Private Function m_ProcessNameParams(mSql As String, mDic As CHashTable, mParams() As Variant) As Boolean
-//   Dim mNewSql As String, mWord As String, mFieldName As String
-//   Dim mParamCount As Long, i As Long, comaCount As Long
-//   Dim mBeginParam As Boolean
-  
-//   If m_ApostropheCount(mSql) Mod 2 = 1 Then
-//     Err.Raise 110000000, "Symbal " '" must be in pairs,please check SQL statement"
-//   End If
-  
-//   'init mDic
-//   mBeginParam = False
-//   mFieldName = ""
-//   mParamCount = 0
-  
-//   For i = 1 To Len(mSql)
-//     mWord = Mid(mSql, i, 1)
-//     Select Case mWord
-//       Case " ", ",", ")"
-//         mNewSql = mNewSql & mWord
-//         If mBeginParam Then
-//           ReDim Preserve mParams(mParamCount)
-//           mParams(mParamCount) = mDic.Item(mFieldName)
-//           mFieldName = ""
-//           mParamCount = mParamCount + 1
-//         End If
-//         mBeginParam = False
-//       Case "'"
-//         comaCount = comaCount + 1
-//         mNewSql = mNewSql & mWord
-//       Case "@"
-//         If comaCount Mod 2 = 0 Then
-//           mBeginParam = True
-//           mNewSql = mNewSql & "?"
-//         Else
-//           'odd number of "'" means that "@" is only string of content
-//           mNewSql = mNewSql & mWord
-//         End If
-//       Case Else
-//         If mBeginParam = False Then
-//           mNewSql = mNewSql & mWord
-//         Else
-//           mFieldName = mFieldName & mWord
-//         End If
-//     End Select
-//   Next i
-//   'all done but check last word for that last word maybe param
-//   If mFieldName <> "" Then
-//     ReDim Preserve mParams(mParamCount)
-//     mParams(mParamCount) = mDic.Item(mFieldName)
-//     mFieldName = ""
-//   End If
-//   'return
-//   mSql = mNewSql
-//   m_ProcessNameParams = True
-// End Function
+            StringBuilder sb = new StringBuilder("");
+            if (m_ApostropheCount(sql) % 2 == 1)
+            {
+                throw new Exception("Symbal \"'\" must be in pairs,please check SQL statement");
+            }
+            for (int i = 0; i < sql.Length; i++)
+            {
+                word = sql.Substring(i, 1);
+                switch (word)
+                {
+                    case " ":
+                    case ",":
+                    case ")":
+                        {
+                            sb.Append(word);
+                            if (beginParam)
+                            {
+                                if (!dic.TryGetValue(fieldName,out paramValue))
+                                {
+                                    throw new Exception("Can't find keyname match of Param " + fieldName);
+                                }
+                                fieldName = "";
+                                paramList.Add(paramValue);
+                            }
+                            beginParam = false;
+                            break;
+                        }
+                    case "'":
+                        {
+                            comaCount += 1;
+                            sb.Append(word);
+                            break;
+                        }
+                    case "@":
+                        {
+                            if (comaCount % 2 == 0)
+                            {
+                                beginParam = true;
+                                sb.Append("?");
+                            }
+                            else
+                            {
+                                sb.Append(word);
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            if (beginParam == false)
+                            {
+                                sb.Append(word);
+                            }
+                            else
+                            {
+                                fieldName = fieldName + word;
+                            }
+                            break;
+                        }
+                }
+            }
+            if (fieldName.Length>0)
+            {
+                if (!dic.TryGetValue(fieldName, out paramValue))
+                {
+                    throw new Exception("Can't find keyname match of Param " + fieldName);
+                }
+                fieldName = "";
+                paramList.Add(paramValue);
+            }
+            sql = sb.ToString();
+            paramArr = paramList.ToArray();
+            return true;
+        }
         #endregion
 
         #region Public Methods

@@ -9,10 +9,7 @@ namespace OpenLib.DbHelper
     {
         private SQLiteConnection m_Conn;
         private SQLiteCommand m_Command;
-        public SqliteHelper()
-        {
-
-        }
+        public SqliteHelper() { }
 
         #region Private
         protected override void openConn()
@@ -21,7 +18,7 @@ namespace OpenLib.DbHelper
             m_Conn.Open();
         }
 
-        protected override void closeConn() 
+        protected override void closeConn()
         {
             m_Conn.Close();
             m_Conn = null;
@@ -56,7 +53,7 @@ namespace OpenLib.DbHelper
             {
                 openConn();
             }
-            m_Command = new SQLiteCommand(sql,m_Conn);
+            m_Command = new SQLiteCommand(sql, m_Conn);
             m_Command.CommandType = CommandType.Text;
             foreach (var item in paramArr)
             {
@@ -78,7 +75,9 @@ namespace OpenLib.DbHelper
 
         public DataTable ExecNamedQuery(string sql, Dictionary<string, object> dt)
         {
-            throw new NotImplementedException();
+            object[] paramArr=new object[]{};
+            m_ProcessNameParams(ref sql, dt, ref paramArr);
+            return ExecParamQuery(sql, paramArr);
         }
 
         public int ExecNonQuery(string sql)
@@ -125,7 +124,9 @@ namespace OpenLib.DbHelper
 
         public int ExecNamedNonQuery(string sql, Dictionary<string, object> dt)
         {
-            throw new NotImplementedException();
+            object[] paramArr = new object[] { };
+            m_ProcessNameParams(ref sql, dt, ref paramArr);
+            return ExecParamNonQuery(sql, paramArr);
         }
 
         public object ExecCreate(string sql)
@@ -145,17 +146,51 @@ namespace OpenLib.DbHelper
 
         public object ExecScalar(string sql)
         {
-            throw new NotImplementedException();
+            object result;
+            if (m_AutoConnect)
+            {
+                openConn();
+            }
+            m_Command = new SQLiteCommand(sql, m_Conn);
+            m_Command.CommandType = CommandType.Text;
+            result = m_Command.ExecuteScalar();
+            if (m_AutoConnect)
+            {
+                closeConn();
+            }
+            m_Command.Dispose();
+            return result;
         }
 
         public object ExecParamScalar(string sql, params object[] paramArr)
         {
-            throw new NotImplementedException();
+            object result;
+            if (m_AutoConnect)
+            {
+                openConn();
+            }
+            m_Command = new SQLiteCommand(sql, m_Conn);
+            m_Command.CommandType = CommandType.Text;
+            foreach (var item in paramArr)
+            {
+                SQLiteParameter param = m_Command.CreateParameter();
+                param.Value = item;
+                m_Command.Parameters.Add(param);
+            }
+            result = m_Command.ExecuteScalar();
+            if (m_AutoConnect)
+            {
+                closeConn();
+            }
+            m_Command.Dispose();
+            return result;
         }
 
         public object ExecNamedScalar(string sql, Dictionary<string, object> dt)
         {
-            throw new NotImplementedException();
+            object[] paramArr = new object[] { };
+            m_ProcessNameParams(ref sql, dt, ref paramArr);
+            return ExecParamScalar(sql, paramArr);
         }
     }
 }
