@@ -6,3 +6,4 @@ packages
 ## test application
 TestLib
 *.exe
+*.pdb
