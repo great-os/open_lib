@@ -1,0 +1,14 @@
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\OpenLib.dll.config
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\OpenLib.dll
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\OpenLib.pdb
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\EntityFramework.dll
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\EntityFramework.SqlServer.dll
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\System.Data.SQLite.dll
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\System.Data.SQLite.EF6.dll
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\System.Data.SQLite.Linq.dll
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\EntityFramework.xml
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\EntityFramework.SqlServer.xml
+E:\GitCode\C#\OpenLib\OpenLib\bin\Debug\System.Data.SQLite.xml
+E:\GitCode\C#\OpenLib\OpenLib\obj\Debug\OpenLib.dll
+E:\GitCode\C#\OpenLib\OpenLib\obj\Debug\OpenLib.pdb
+E:\GitCode\C#\OpenLib\OpenLib\obj\Debug\OpenLib.csprojResolveAssemblyReference.cache
