@@ -79,6 +79,7 @@ namespace OpenLib.DbHelper
                     case " ":
                     case ",":
                     case ")":
+                    case ";":
                         {
                             sb.Append(word);
                             if (beginParam)

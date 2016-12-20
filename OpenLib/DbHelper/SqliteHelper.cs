@@ -45,7 +45,6 @@ namespace OpenLib.DbHelper
             m_Command.Dispose();
             return dt;
         }
-
         public DataTable ExecParamQuery(string sql, params object[] paramArr)
         {
             DataTable dt = new DataTable("_SqliteHelper");
@@ -72,7 +71,6 @@ namespace OpenLib.DbHelper
             m_Command.Dispose();
             return dt;
         }
-
         public DataTable ExecNamedQuery(string sql, Dictionary<string, object> dt)
         {
             object[] paramArr=new object[]{};
@@ -97,7 +95,6 @@ namespace OpenLib.DbHelper
             m_Command.Dispose();
             return result;
         }
-
         public int ExecParamNonQuery(string sql, params object[] paramArr)
         {
             int result;
@@ -121,7 +118,6 @@ namespace OpenLib.DbHelper
             m_Command.Dispose();
             return result;
         }
-
         public int ExecNamedNonQuery(string sql, Dictionary<string, object> dt)
         {
             object[] paramArr = new object[] { };
@@ -131,17 +127,53 @@ namespace OpenLib.DbHelper
 
         public object ExecCreate(string sql)
         {
-            throw new NotImplementedException();
+            object result;
+            if (m_AutoConnect)
+            {
+                openConn();
+            }
+            m_Command = new SQLiteCommand(sql, m_Conn);
+            m_Command.CommandType = CommandType.Text;
+            m_Command.ExecuteNonQuery();
+            m_Command.CommandText = "SELECT last_insert_rowid()";
+            result = m_Command.ExecuteScalar();
+            if (m_AutoConnect)
+            {
+                closeConn();
+            }
+            m_Command.Dispose();
+            return result;
         }
-
         public object ExecParamCreate(string sql, params object[] paramArr)
         {
-            throw new NotImplementedException();
+            object result;
+            if (m_AutoConnect)
+            {
+                openConn();
+            }
+            m_Command = new SQLiteCommand(sql, m_Conn);
+            m_Command.CommandType = CommandType.Text;
+            foreach (var item in paramArr)
+            {
+                SQLiteParameter param = m_Command.CreateParameter();
+                param.Value = item;
+                m_Command.Parameters.Add(param);
+            }
+            m_Command.ExecuteNonQuery();
+            m_Command.CommandText = "SELECT last_insert_rowid()";
+            result = m_Command.ExecuteScalar();
+            if (m_AutoConnect)
+            {
+                closeConn();
+            }
+            m_Command.Dispose();
+            return result;
         }
-
         public object ExecNamedCreate(string sql, Dictionary<string, object> dt)
         {
-            throw new NotImplementedException();
+            object[] paramArr = new object[] { };
+            m_ProcessNameParams(ref sql, dt, ref paramArr);
+            return ExecParamCreate(sql, paramArr);
         }
 
         public object ExecScalar(string sql)
@@ -161,7 +193,6 @@ namespace OpenLib.DbHelper
             m_Command.Dispose();
             return result;
         }
-
         public object ExecParamScalar(string sql, params object[] paramArr)
         {
             object result;
@@ -185,7 +216,6 @@ namespace OpenLib.DbHelper
             m_Command.Dispose();
             return result;
         }
-
         public object ExecNamedScalar(string sql, Dictionary<string, object> dt)
         {
             object[] paramArr = new object[] { };
