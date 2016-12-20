@@ -2,7 +2,6 @@
 *.swp
 *.suo
 ## packages
-/packages
+packages
 ## test application
-/TestLib
-/TestLib/bin
+TestLib
