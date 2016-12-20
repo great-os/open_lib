@@ -7,3 +7,5 @@ packages
 TestLib
 *.exe
 *.pdb
+OpenLib/bin
+OpenLib/obj
